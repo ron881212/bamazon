@@ -61,7 +61,44 @@ let lowInventory = () => {
 }
 
 let addInentory = () => {
-    console.log("this is new");
+    connection.query("SELECT * FROM products", function(err, res) {
+        console.table(res);
+        if (err) throw err;
+        inquirer
+          .prompt([
+            {
+                name: "addProduct",
+                type: "input",
+                message: "What is the ID of the product you would like to add to?"
+            },
+            {
+                name: "addQuantity",
+                type: "input",
+                message: "How many would you like to add?"
+            }
+          ])
+          .then(answer => {
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                [
+                    {
+                        stock_quantity: res[(answer.addProduct - 1)].stock_quantity + parseInt(answer.addQuantity) 
+                    },
+                    {
+                        item_id: answer.addProduct
+                    },
+                ],
+                function(err) {
+                  if (err) throw err;
+                  console.log("-------------------------------------------------------------");
+                  console.log(`You've added ${ answer.addQuantity } more units to your ${ answer.addProduct } stock`);
+                  console.log("-------------------------------------------------------------");
+                  viewInventory();
+                }
+            );
+        });
+        // console.table(res);
+    });
 }
 
 let newProduct = () => {
