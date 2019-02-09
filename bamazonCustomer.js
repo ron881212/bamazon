@@ -24,20 +24,9 @@ connection.connect(function(err) {
 
 function showInventory() {
     connection.query("SELECT * FROM products", function(err, res) {
-      for (let i = 0; i < res.length; i++) {
-        console.table([
-            {
-                item_id: res[i].item_id,
-                product_name: res[i].product_name,
-                department_name: res[i].department_name,
-                price: res[i].price,
-                stock_quantity: res[i].stock_quantity
-            }
-          ]);
-      }
-      console.log("-------------------------------------------------------------");
-      start();
-    //   connection.end();
+        console.table(res);
+        console.log("-------------------------------------------------------------");
+        start();
     });
 }
 

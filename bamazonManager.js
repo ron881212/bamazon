@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require('console.table');
-var total;
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -25,9 +24,83 @@ connection.connect(function(err) {
 start = () => {
     inquirer
       .prompt([
-        /* Pass your questions in here */
+            {
+            name: "schedule",
+            type: "list",
+            message: "What would you like to do today?",
+            choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+            }
       ])
       .then(answers => {
-        // Use user feedback for... whatever!!
+        if(answers.schedule === "View Products for Sale"){
+            viewInventory();
+        } else if(answers.schedule === "View Low Inventory"){
+            lowInventory();
+        } else if(answers.schedule === "Add to Inventory"){
+            addInentory();
+        } else if(answers.schedule === "Add New Product"){
+            newProduct();
+        }
       });
+}
+
+let viewInventory = () => {
+    connection.query("SELECT * FROM products", function(err, res) {
+        console.table(res);
+        console.log("-------------------------------------------------------------");
+        start();
+    });
+}
+
+let lowInventory = () => {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 15", function(err, res) {
+        console.table(res);
+        console.log("-------------------------------------------------------------");
+        start();
+    });
+}
+
+let addInentory = () => {
+    console.log("this is new");
+}
+
+let newProduct = () => {
+    inquirer
+    .prompt([
+        {
+        name: "product",
+        type: "input",
+        message: "What product would you like to add?"
+        },
+        {
+        name: "department",
+        type: "input",
+        message: "What department are we adding this product to?"
+        },
+        {
+        name: "price",
+        type: "input",
+        message: "How much does this item sell for?"
+        },
+        {
+        name: "stock",
+        type: "input",
+        message: "How many do we want to add?"
+        }
+    ])
+    .then(answers => {
+        connection.query(
+        "INSERT INTO products SET ?",      
+            {
+                product_name: answers.product,
+                department_name: answers.department,
+                price: answers.price,
+                stock_quantity: answers.stock
+            },
+        function(err, res) {
+            if (err) throw err;
+        });
+        console.table(res);
+        start();
+    });
 }
