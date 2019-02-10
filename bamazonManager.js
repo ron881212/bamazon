@@ -97,11 +97,12 @@ let addInentory = () => {
                 }
             );
         });
-        // console.table(res);
     });
 }
 
 let newProduct = () => {
+    connection.query("SELECT * FROM products", function(err, res) {
+    console.table(res);
     inquirer
     .prompt([
         {
@@ -137,7 +138,7 @@ let newProduct = () => {
         function(err, res) {
             if (err) throw err;
         });
-        console.table(res);
-        start();
+        viewInventory();
     });
+});
 }
