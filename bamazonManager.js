@@ -53,7 +53,7 @@ let viewInventory = () => {
 }
 
 let lowInventory = () => {
-    connection.query("SELECT * FROM products WHERE stock_quantity < 15", function(err, res) {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 6", function(err, res) {
         console.table(res);
         console.log("-------------------------------------------------------------");
         start();
