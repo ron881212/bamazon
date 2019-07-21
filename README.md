@@ -12,4 +12,4 @@
 - inquirer
 - console.table
 #### The preview link contains a working video of the Bamazon app
-[Preview Link](https://drive.google.com/file/d/1UchLK8bQ_u559e0Fcybt1IIftBc0zCKR/view?usp=sharing)
+[Preview Link](https://drive.google.com/file/d/1e0zJyVp9LXQum430OmIKcYZSbP_G0gv2/view)
